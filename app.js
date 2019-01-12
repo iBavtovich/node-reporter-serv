@@ -2,12 +2,22 @@ var createError = require('http-errors');
 var express = require('express');
 var path = require('path');
 var logger = require('morgan');
+var bb = require('express-busboy');
 
 var photosRouter = require('./routes/photos');
 var reportsRouter = require('./routes/reports');
 var settingsRouter = require('./routes/settings');
 
 var app = express();
+
+bb.extend(app, {
+  upload: true,
+  allowedPath: /^\/photos\/\d$/,
+  mimeTypeLimit: [
+    'image/jpeg',
+    'image/png'
+  ]
+});
 
 app.use(logger('dev'));
 app.use(express.json());
