@@ -1,6 +1,5 @@
 var createError = require('http-errors');
 var express = require('express');
-var path = require('path');
 var logger = require('morgan');
 var bb = require('express-busboy');
 
@@ -10,6 +9,10 @@ var settingsRouter = require('./routes/settings');
 
 var app = express();
 
+app.use(logger('dev'));
+app.use(express.urlencoded({ extended: false }));
+app.use(express.json());
+
 bb.extend(app, {
   upload: true,
   allowedPath: /^\/photos\/\d$/,
@@ -18,10 +21,6 @@ bb.extend(app, {
     'image/png'
   ]
 });
-
-app.use(logger('dev'));
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
 
 app.use('/reports', reportsRouter);
 app.use('/settings', settingsRouter);
