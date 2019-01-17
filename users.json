@@ -2,6 +2,8 @@
   "users": [
     {
       "id": "1",
+      "username": "johny99",
+      "password": "123123123",
       "name": "John",
       "lastName": "Doe",
       "position": "Teacher",
@@ -9,6 +11,8 @@
     },
     {
       "id": "2",
+      "username": "PeterTheMachine",
+      "password": "123123123",
       "name": "Peter",
       "lastName": "Swartz",
       "position": "Cleaner",

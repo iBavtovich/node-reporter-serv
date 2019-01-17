@@ -17,8 +17,12 @@
     "http-errors": "~1.6.2",
     "lowdb": "^1.0.0",
     "morgan": "~1.9.0",
+    "passport": "^0.4.0",
+    "passport-http-bearer": "^1.0.1",
+    "passport-local": "^1.0.0",
     "pug": "2.0.0-beta11",
-    "shortid": "^2.2.14"
+    "shortid": "^2.2.14",
+    "uuid-token-generator": "^1.0.0"
   },
   "devDependencies": {
     "xo": "^0.23.0"

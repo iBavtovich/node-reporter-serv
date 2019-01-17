@@ -1,5 +1,5 @@
 const axios = require('axios');
-const token = require('./yandexAuth');
+const token = require('./yandexAuthService');
 const settingsConverter = require('../converter/settingsConverter');
 
 const yandexHttpClient = axios.create({

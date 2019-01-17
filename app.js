@@ -6,6 +6,7 @@ var bb = require('express-busboy');
 var photosRouter = require('./routes/photos');
 var reportsRouter = require('./routes/reports');
 var settingsRouter = require('./routes/settings');
+var authRouter = require('./routes/authentication');
 
 var app = express();
 
@@ -22,6 +23,8 @@ bb.extend(app, {
   ]
 });
 
+
+app.use('/authenticate', authRouter);
 app.use('/reports', reportsRouter);
 app.use('/settings', settingsRouter);
 app.use('/photos', photosRouter);
