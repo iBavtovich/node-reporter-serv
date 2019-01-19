@@ -5,8 +5,9 @@ const validateSchema = require('../validators/validator');
 
 let router = express.Router();
 
-router.put('/', validateSchema('update-settings'), passport.authenticate('bearer', { session: false }, function (req, res) {
-	dataSyncAdapter.updateSettings(1, req.body.settings).then(function (result) {
+router.put('/', validateSchema('update-settings'), passport.authenticate('bearer', { session: false }), function (req, res) {
+	let userId = req.user.id;
+	dataSyncAdapter.updateSettings(userId, req.body.settings).then(function (result) {
 		switch (result) {
 			case 200:
 				res.status(result).json({message: 'Settings was successfully updated'});
@@ -21,12 +22,13 @@ router.put('/', validateSchema('update-settings'), passport.authenticate('bearer
 				res.status(500).json({error: 'Update was failed with unknown error'});
 		}
 	});
-}));
+});
 
-router.get('/', passport.authenticate('bearer', { session: false }, function (req, res) {
-	dataSyncAdapter.getSettingsForUser(1).then(function (result) {
+router.get('/', passport.authenticate('bearer', { session: false }), function (req, res) {
+	let userId = req.user.id;
+	dataSyncAdapter.getSettingsForUser(userId).then(function (result) {
 		res.json(result);
 	});
-}));
+});
 
 module.exports = router;

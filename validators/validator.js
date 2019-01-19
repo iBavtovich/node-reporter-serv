@@ -1,8 +1,10 @@
 const Ajv = require('ajv');
 const requestSchema = require('./schemas/updateSettingsReq').schema;
+const authSchema = require('./schemas/userLoginSchema').schema;
 
 const ajv = Ajv();
 ajv.addSchema(requestSchema, 'update-settings');
+ajv.addSchema(authSchema, 'auth-user');
 
 function errorResponse(schemaErrors) {
 	return {

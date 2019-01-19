@@ -2,18 +2,18 @@ var createError = require('http-errors');
 var express = require('express');
 var logger = require('morgan');
 var bb = require('express-busboy');
-
 var photosRouter = require('./routes/photos');
+
+require('./configs/passport');
 var reportsRouter = require('./routes/reports');
 var settingsRouter = require('./routes/settings');
 var authRouter = require('./routes/authentication');
-
 var app = express();
 
 app.use(logger('dev'));
+
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
-
 bb.extend(app, {
   upload: true,
   allowedPath: /^\/photos\/\d$/,
@@ -22,6 +22,7 @@ bb.extend(app, {
     'image/png'
   ]
 });
+
 
 
 app.use('/authenticate', authRouter);

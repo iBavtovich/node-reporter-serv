@@ -1,8 +1,7 @@
 var passport = require('passport');
-let express = require('express');
 var LocalStrategy = require('passport-local').Strategy;
 var BearerStrategy = require('passport-http-bearer').Strategy;
-var userService = require('./userService');
+var userService = require('../services/userService');
 
 passport.use(new LocalStrategy({
 		usernameField: 'username',
@@ -20,15 +19,11 @@ passport.use(new LocalStrategy({
 
 passport.use(new BearerStrategy(
 	function(token, done) {
-		let isValid = userService.isValidToken(token);
-		if (isValid) {
-			done(null, true);
-		} else {
+		let user = userService.getUserIfTokenValid(token);
+		if (user === undefined) {
 			done(null, false, "Invalid token");
+		} else {
+			done(null, user);
 		}
 	}
 ));
-
-app.use(passport.initialize());
-
-module.exports = app;
