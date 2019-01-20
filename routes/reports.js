@@ -38,9 +38,16 @@ router.get('/new-users', async function (req, res, next) {
 });
 
 
-router.get('/top-salaries', function (req, res, next) {
+router.get('/top-salaries', async function (req, res, next) {
 
-	res.send('respond with a resource');
+	let usersData = await reportService.topSalariesReport();
+
+	let response = halson({
+		employees: usersData.users
+	})
+	.addLink('self', 'http://' + req.headers.host + req.originalUrl);
+
+	res.status(200).json(response);
 });
 
 router.get('/badge', function (req, res, next) {

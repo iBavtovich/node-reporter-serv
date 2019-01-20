@@ -4,10 +4,8 @@ class Employee {
 		this.lastName = csvString[1];
 		this.joinDate = csvString[2];
 		this.salary = csvString[3];
-		this.usSalary = this.salary/70;
 		this.badges = JSON.parse(csvString[4]);
 	}
-
 }
 
 module.exports = Employee;
