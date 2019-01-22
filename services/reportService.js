@@ -18,24 +18,58 @@ const topSalariesReportMapping = (user) => {
 };
 
 async function getRecentEmployeesList(settings, page, pageSize) {
-	return getListOfEmployeesSortedByFuncWithPagination(settings, page, pageSize, recentEmployeeComparator, recentUserReportMapping);
+	let maxNumberInReport = settings[0].parameters.filter(e => e.id === 'num_of_records');
+
+	return getListOfEmployeesSortedByFuncWithPagination(maxNumberInReport.value, page, pageSize, recentEmployeeComparator, recentUserReportMapping);
 }
 
 async function getTopSalariesEmployeesList() {
 	return getListOfEmployeesSortedByFuncWithPagination(10, 1, 10, topSalaryComparator, topSalariesReportMapping);
 }
 
-async function getListOfEmployeesSortedByFuncWithPagination(settings, page, pageSize, sortFunction, mappingFunction) {
+async function getListOfEmployeesSortedByFuncWithPagination(maxNumberInReport, page, pageSize, sortFunction, mappingFunction) {
 
 	let employees = await getEmployeesListFromDysk();
 	employees.sort(sortFunction);
 
-	let employeesForReport = employees.slice(0, settings);
+	let employeesForReport = employees.slice(0, maxNumberInReport);
 	let employeesForPage = getEmployeesWithPagination(employeesForReport, page, pageSize);
 
 	let pageResult = [];
 	for (let i = 0; i < employeesForPage.length; i++) {
 		pageResult.push(mappingFunction(employeesForPage[i]));
+	}
+
+	return {
+		totalNumber: employeesForReport.length,
+		users: pageResult
+	};
+}
+
+async function getListOfEmployeesWithBadge(settings, page, pageSize, badgeName) {
+	let maxNumberInReport = settings[0].parameters.filter(e => e.id === 'num_of_records');
+	let employees = await getEmployeesListFromDysk();
+	let employeesForReport = [];
+	for (let i = 0; i < employees.length; i++) {
+		let employee = employees[i];
+		for (let j = 0; j < employee.badges.length; j++) {
+			let badge = employee.badges[j];
+			if (badge.id === badgeName) {
+				employeesForReport.push(employee);
+			}
+		}
+	}
+
+	let employeesForPage = getEmployeesWithPagination(employeesForReport.slice(0, maxNumberInReport.value), page, pageSize);
+
+	let pageResult = [];
+	for (let i = 0; i < employeesForPage.length; i++) {
+		let empl = employeesForPage[i];
+		pageResult.push({
+			name: empl.name,
+			lastName: empl.lastName,
+			badges: empl.badges
+		});
 	}
 
 	return {
@@ -53,3 +87,4 @@ function getEmployeesWithPagination(listOfEmployees, page, pageSize) {
 
 module.exports.newUsersReport = getRecentEmployeesList;
 module.exports.topSalariesReport = getTopSalariesEmployeesList;
+module.exports.userWithBadgeReport = getListOfEmployeesWithBadge;

@@ -12,7 +12,7 @@ var getSettingsForUser = async function getSettingsForUser(userId) {
 	await createSettingsWhenNotExists(userId);
 	let settingsFromYandex = await (receiveSettingsForReport(userId));
 
-	return {'settings' : settingsConverter.convertSettingsFromYandex(settingsFromYandex)};
+	return {'settings': settingsConverter.convertSettingsFromYandex(settingsFromYandex)};
 };
 
 var updateSettings = async function updateSettings(userId, settingsUpdate) {
@@ -64,7 +64,7 @@ async function setUpSettingsFirstTime(userId) {
 				}, {
 					"change_type": "insert",
 					"collection_id": "settings",
-					"record_id": "top_salaries",
+					"record_id": "badge",
 					"changes": [{
 						"change_type": "set",
 						"field_id": "num_of_records",
@@ -103,9 +103,16 @@ async function receiveSettingsForReport(userId) {
 		let result = await yandexHttpClient.get('/' + userId + "/snapshot?collection_id=settings");
 		return result.data.records;
 	} catch (e) {
-		console.log(e);
+		console.error(e);
 	}
 }
 
+async function getSettingsForReport(userId, reportType) {
+	let settings = await getSettingsForUser(userId);
+	return settings.settings.filter(e => e.report_name === reportType);
+}
+
+
 module.exports.getSettingsForUser = getSettingsForUser;
 module.exports.updateSettings = updateSettings;
+module.exports.getSettingsForReport = getSettingsForReport;
