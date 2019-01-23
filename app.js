@@ -1,15 +1,47 @@
 var createError = require('http-errors');
 var express = require('express');
 var logger = require('morgan');
-var bb = require('express-busboy');
-var photosRouter = require('./routes/photos');
+const bb = require('express-busboy');
+const photosRouter = require('./routes/photos');
+var cors = require('cors');
 
 require('./configs/passport');
-var reportsRouter = require('./routes/reports');
-var settingsRouter = require('./routes/settings');
-var authRouter = require('./routes/authentication');
-var app = express();
+const reportsRouter = require('./routes/reports');
+const settingsRouter = require('./routes/settings');
+const authRouter = require('./routes/authentication');
 
+const app = express();
+const expressSwagger = require('express-swagger-generator')(app);
+
+let options = {
+  swaggerDefinition: {
+    info: {
+      description: 'Reporter server',
+      title: 'Swagger',
+      version: '1.0.0',
+    },
+    host: 'localhost:3000',
+    basePath: '/',
+    produces: [
+      "application/json",
+    ],
+    schemes: ['http'],
+    securityDefinitions: {
+      bearerAuth: {
+        type: 'apiKey',
+        in: 'header',
+        name: 'Authorization',
+        description: "Get using /authenticate end-point",
+      }
+    }
+  },
+  basedir: '../reporter',
+  files: ['./routes/*.js']
+};
+expressSwagger(options);
+
+
+app.use(cors());
 app.use(logger('dev'));
 
 app.use(express.urlencoded({ extended: false }));

@@ -5,7 +5,10 @@ const settingsConverter = require('../converters/settingsConverter');
 const yandexHttpClient = axios.create({
 	baseURL: 'https://cloud-api.yandex.net/v1/data/app/databases',
 	timeout: 5000,
-	headers: {'Authorization': 'OAuth ' + token}
+	headers: {'Authorization': 'OAuth ' + token},
+	validateStatus: function (status) {
+		return status >= 200 && status < 500;
+	}
 });
 
 var getSettingsForUser = async function getSettingsForUser(userId) {

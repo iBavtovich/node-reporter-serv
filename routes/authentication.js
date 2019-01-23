@@ -7,6 +7,27 @@ const validateSchema = require('../validators/validator');
 let tokgen = new TokenGenerator(256, TokenGenerator.BASE62);
 let router = express.Router();
 
+/**
+ * @typedef Token
+ * @property {string} token
+ */
+
+/**
+ * @typedef Credentials
+ * @property {string} username.required
+ * @property {string} password.required
+ */
+
+/**
+ * @route POST /authenticate
+ * @group Auth Service - Get token
+ * @consumes application/json
+ * @produces application/json
+ * @param {Credentials.model} credentials.body.required - username and password
+ * @returns {Token.model} 200 - token for requests
+ * @returns {Error} 401 - Invalid credentials
+ * @returns {Error} default - Unexpected error
+ */
 router.post('/', validateSchema("auth-user"), passport.authenticate('local', { session: false }),
 	function(req, res) {
 
@@ -17,7 +38,7 @@ router.post('/', validateSchema("auth-user"), passport.authenticate('local', { s
 			userService.updateUserToken(req.user.id, token);
 		}
 
-		res.json({token: token });
+		res.json({token: 'Bearer ' + token });
 	});
 
 module.exports = router;

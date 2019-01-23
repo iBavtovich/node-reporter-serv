@@ -5,6 +5,18 @@ let passport = require('passport');
 
 let router = express.Router();
 
+/**
+ * @route PUT /photos/{id}
+ * @group Photo Service - Operations for uploading photos
+ * @param {string} id.path.required - user id
+ * @param {file} photo.formData - binary file
+ * @consumes application/x-www-form-urlencoded
+ * @produces application/json
+ * @returns {json} 200 - Result
+ * @returns {Error} 401 - Invalid token
+ * @returns {json}  default - Unexpected error
+ * @security bearerAuth
+ */
 router.put('/:id', passport.authenticate('bearer', { session: false }), function (req, res) {
 	const emptyFieldsInReq = !Object.keys(req.body).length;
 	const photo = req.files.photo;

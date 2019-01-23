@@ -7,7 +7,10 @@ const fileName = 'employees.csv';
 
 const yandexHttpClient = axios.create({
 	timeout: 5000,
-	headers: {'Authorization': 'OAuth ' + token}
+	headers: {'Authorization': 'OAuth ' + token},
+	validateStatus: function (status) {
+		return status >= 200 && status < 500;
+	}
 });
 
 var getEmployeesListFromDysk = async function downloadEmployeesListFromDysk() {
