@@ -4,28 +4,28 @@
  * Module dependencies.
  */
 
-var app = require('../app');
-var debug = require('debug')('reporter:server');
-var http = require('http');
-
+const app = require('../app');
+const debug = require('debug')('reporter:server');
+const http = require('http');
+const { port } = require('../configs/config');
 /**
  * Get port from environment and store in Express.
  */
 
-var port = normalizePort(process.env.PORT || '3000');
-app.set('port', port);
+const appPort = normalizePort(port || '3000');
+app.set('port', appPort);
 
 /**
  * Create HTTP server.
  */
 
-var server = http.createServer(app);
+const server = http.createServer(app);
 
 /**
  * Listen on provided port, on all network interfaces.
  */
 
-server.listen(port);
+server.listen(appPort);
 server.on('error', onError);
 server.on('listening', onListening);
 
@@ -58,9 +58,9 @@ function onError(error) {
     throw error;
   }
 
-  var bind = typeof port === 'string'
-    ? 'Pipe ' + port
-    : 'Port ' + port;
+  var bind = typeof appPort === 'string'
+    ? 'Pipe ' + appPort
+    : 'Port ' + appPort;
 
   // handle specific listen errors with friendly messages
   switch (error.code) {
