@@ -1,11 +1,11 @@
-let TokenGenerator = require('uuid-token-generator');
-let passport = require('passport');
-let express = require('express');
-let userService = require('../services/userService');
+const TokenGenerator = require('uuid-token-generator');
+const passport = require('passport');
+const express = require('express');
+const userService = require('../services/userService');
 const validateSchema = require('../validators/validator');
 
-let tokgen = new TokenGenerator(256, TokenGenerator.BASE62);
-let router = express.Router();
+const tokgen = new TokenGenerator(256, TokenGenerator.BASE62);
+const router = express.Router();
 
 /**
  * @typedef Token
@@ -28,17 +28,15 @@ let router = express.Router();
  * @returns {Error} 401 - Invalid credentials
  * @returns {Error} default - Unexpected error
  */
-router.post('/', validateSchema("auth-user"), passport.authenticate('local', { session: false }),
-	function(req, res) {
+router.post('/', validateSchema('auth-user'), passport.authenticate('local', {session: false}), (req, res) => {
+	let token = userService.getTokenByUserId(req.user.id);
 
-		let token = userService.getTokenByUserId(req.user.id);
+	if (token === undefined) {
+		token = tokgen.generate();
+		userService.updateUserToken(req.user.id, token);
+	}
 
-		if (token === undefined) {
-			token = tokgen.generate();
-			userService.updateUserToken(req.user.id, token);
-		}
-
-		res.json({token: 'Bearer ' + token });
-	});
+	res.json({token: 'Bearer ' + token});
+});
 
 module.exports = router;

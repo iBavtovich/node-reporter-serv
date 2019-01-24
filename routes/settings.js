@@ -1,9 +1,9 @@
-let express = require('express');
-let passport = require('passport');
+const express = require('express');
+const passport = require('passport');
 const dataSyncAdapter = require('../services/dataSyncService');
 const validateSchema = require('../validators/validator');
 
-let router = express.Router();
+const router = express.Router();
 
 /**
  * @typedef ChangeReportParameter
@@ -35,8 +35,8 @@ let router = express.Router();
  * @returns {Error} 500 - Unexpected error
  * @security bearerAuth
  */
-router.put('/', validateSchema('update-settings'), passport.authenticate('bearer', { session: false }), function (req, res) {
-	let userId = req.user.id;
+router.put('/', validateSchema('update-settings'), passport.authenticate('bearer', {session: false}), (req, res) => {
+	const userId = req.user.id;
 	dataSyncAdapter.updateSettings(userId, req.body.settings).then(function (result) {
 		switch (result) {
 			case 200:
@@ -83,9 +83,9 @@ router.put('/', validateSchema('update-settings'), passport.authenticate('bearer
  * @returns {json}  default - Unexpected error
  * @security bearerAuth
  */
-router.get('/', passport.authenticate('bearer', { session: false }), function (req, res) {
-	let userId = req.user.id;
-	dataSyncAdapter.getSettingsForUser(userId).then(function (result) {
+router.get('/', passport.authenticate('bearer', {session: false}), (req, res) => {
+	const userId = req.user.id;
+	dataSyncAdapter.getSettingsForUser(userId).then(result => {
 		res.json(result);
 	});
 });

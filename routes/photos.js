@@ -1,9 +1,9 @@
-let fs = require('fs');
-let express = require('express');
-let updatePhoto = require('../services/lowDBService');
-let passport = require('passport');
+const fs = require('fs');
+const express = require('express');
+const passport = require('passport');
+const updatePhoto = require('../services/lowDBService');
 
-let router = express.Router();
+const router = express.Router();
 
 /**
  * @route PUT /photos/{id}
@@ -17,9 +17,9 @@ let router = express.Router();
  * @returns {json}  default - Unexpected error
  * @security bearerAuth
  */
-router.put('/:id', passport.authenticate('bearer', { session: false }), function (req, res) {
+router.put('/:id', passport.authenticate('bearer', {session: false}), (req, res) => {
 	const emptyFieldsInReq = !Object.keys(req.body).length;
-	const photo = req.files.photo;
+	const {photo} = req.files;
 	const justOneFileInReq = !Array.isArray(photo);
 	if (req.files.photo && justOneFileInReq && emptyFieldsInReq) {
 		updatePhoto(req.params.id, fs.readFileSync(photo.file, 'base64'));

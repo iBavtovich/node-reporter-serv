@@ -1,16 +1,17 @@
-var passport = require('passport');
-var LocalStrategy = require('passport-local').Strategy;
-var BearerStrategy = require('passport-http-bearer').Strategy;
-var userService = require('../services/userService');
+/* eslint indent: "off" */
+const passport = require('passport');
+const LocalStrategy = require('passport-local').Strategy;
+const BearerStrategy = require('passport-http-bearer').Strategy;
+const userService = require('../services/userService');
 
 passport.use(new LocalStrategy({
 		usernameField: 'username',
 		passwordField: 'password',
 		session: false
-	}, function (username, password, done) {
-		let user = userService.getUserByUsername(username);
+	}, (username, password, done) => {
+		const user = userService.getUserByUsername(username);
 		if (user === undefined || user.password !== password) {
-			done(null, false, "Bad credentials");
+			done(null, false, 'Bad credentials');
 		} else {
 			done(null, user);
 		}
@@ -18,10 +19,10 @@ passport.use(new LocalStrategy({
 ));
 
 passport.use(new BearerStrategy(
-	function(token, done) {
-		let user = userService.getUserIfTokenValid(token);
+	(token, done) => {
+		const user = userService.getUserIfTokenValid(token);
 		if (user === undefined) {
-			done(null, false, "Invalid token");
+			done(null, false, 'Invalid token');
 		} else {
 			done(null, user);
 		}

@@ -1,8 +1,8 @@
-const Ajv = require('ajv');
+const ajV = require('ajv');
 const requestSchema = require('./schemas/updateSettingsReq').schema;
 const authSchema = require('./schemas/userLoginSchema').schema;
 
-const ajv = Ajv();
+const ajv = ajV();
 ajv.addSchema(requestSchema, 'update-settings');
 ajv.addSchema(authSchema, 'auth-user');
 
@@ -16,15 +16,15 @@ function errorResponse(schemaErrors) {
 	};
 }
 
-function validateSchema (schemaName) {
+function validateSchema(schemaName) {
 	return (req, res, next) => {
-		let isValid = ajv.validate(schemaName, req.body);
-		if (!isValid) {
-			res.status(400).json(errorResponse(ajv.errors));
-		} else {
+		const isValid = ajv.validate(schemaName, req.body);
+		if (isValid) {
 			next();
+		} else {
+			res.status(400).json(errorResponse(ajv.errors));
 		}
-	}
+	};
 }
 
 module.exports = validateSchema;

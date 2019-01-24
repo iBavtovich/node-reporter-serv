@@ -1,8 +1,9 @@
 const express = require('express');
-let passport = require('passport');
+const passport = require('passport');
 const halson = require('halson');
 const reportService = require('../services/reportService');
 const dataSyncService = require('../services/dataSyncService');
+
 const router = express.Router();
 
 /**
@@ -31,7 +32,6 @@ const router = express.Router();
  * @property {SelfLink.model} _links - Link
  */
 
-
 /**
  * @route GET /reports/new-users
  * @group Report Service - Report about employees
@@ -44,9 +44,8 @@ const router = express.Router();
  * @returns {Error} default - Unexpected error
  * @security bearerAuth
  */
-router.get('/new-users', passport.authenticate('bearer', { session: false }), async function (req, res, next) {
-	let page = req.query.page;
-	let pageSize = req.query.pageSize;
+router.get('/new-users', passport.authenticate('bearer', {session: false}), async (req, res) => {
+	let {page, pageSize} = req.query;
 	if (page === undefined) {
 		page = 1;
 	}
@@ -56,16 +55,16 @@ router.get('/new-users', passport.authenticate('bearer', { session: false }), as
 	if (page <= 0 || pageSize <= 0) {
 		res.status(400).json({error: 'Parameters page and pageSize can\'t be less than 1'});
 	}
-	let settings = await dataSyncService.getSettingsForReport(req.user.id, 'new_users');
-	let usersData = await reportService.newUsersReport(settings, page, pageSize);
+	const settings = await dataSyncService.getSettingsForReport(req.user.id, 'new_users');
+	const usersData = await reportService.newUsersReport(settings, page, pageSize);
 
-	let response = halson({
-		page: page,
-		pageSize: pageSize,
+	const response = halson({
+		page,
+		pageSize,
 		totalRecords: usersData.totalNumber,
 		employees: usersData.users
 	})
-	.addLink('self', 'http://' + req.headers.host + req.originalUrl);
+		.addLink('self', 'http://' + req.headers.host + req.originalUrl);
 
 	res.status(200).json(response);
 });
@@ -93,18 +92,16 @@ router.get('/new-users', passport.authenticate('bearer', { session: false }), as
  * @returns {Error} default - Unexpected error
  * @security bearerAuth
  */
-router.get('/top-salaries', passport.authenticate('bearer', { session: false }), async function (req, res, next) {
+router.get('/top-salaries', passport.authenticate('bearer', {session: false}), async (req, res) => {
+	const usersData = await reportService.topSalariesReport();
 
-	let usersData = await reportService.topSalariesReport();
-
-	let response = halson({
+	const response = halson({
 		employees: usersData.users
 	})
-	.addLink('self', 'http://' + req.headers.host + req.originalUrl);
+		.addLink('self', 'http://' + req.headers.host + req.originalUrl);
 
 	res.status(200).json(response);
 });
-
 
 /**
  * @typedef Badge
@@ -141,9 +138,8 @@ router.get('/top-salaries', passport.authenticate('bearer', { session: false }),
  * @returns {Error} default - Unexpected error
  * @security bearerAuth
  */
-router.get('/badge', passport.authenticate('bearer', { session: false }), async function (req, res, next) {
-	let page = req.query.page;
-	let pageSize = req.query.pageSize;
+router.get('/badge', passport.authenticate('bearer', {session: false}), async (req, res) => {
+	let {page, pageSize} = req.query;
 	let badgeName = req.query.badge;
 	if (page === undefined) {
 		page = 1;
@@ -158,16 +154,16 @@ router.get('/badge', passport.authenticate('bearer', { session: false }), async 
 		res.status(400).json({error: 'Badge parameter should be provided'});
 	}
 
-	let settings = await dataSyncService.getSettingsForReport(req.user.id, 'badge');
-	let usersData = await reportService.userWithBadgeReport(settings, page, pageSize, badgeName);
+	const settings = await dataSyncService.getSettingsForReport(req.user.id, 'badge');
+	const usersData = await reportService.userWithBadgeReport(settings, page, pageSize, badgeName);
 
-	let response = halson({
-		page: page,
-		pageSize: pageSize,
+	const response = halson({
+		page,
+		pageSize,
 		totalRecords: usersData.totalNumber,
 		employees: usersData.users
 	})
-	.addLink('self', 'http://' + req.headers.host + req.originalUrl);
+		.addLink('self', 'http://' + req.headers.host + req.originalUrl);
 
 	res.status(200).json(response);
 });
