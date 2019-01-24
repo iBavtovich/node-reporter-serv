@@ -3,7 +3,7 @@ const createError = require('http-errors');
 const logger = require('morgan');
 const bb = require('express-busboy');
 const cors = require('cors');
-// require('./configs/passport');
+const passportConfig = require('./configs/passport');
 const photosRouter = require('./routes/photos');
 const reportsRouter = require('./routes/reports');
 const settingsRouter = require('./routes/settings');

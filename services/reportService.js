@@ -18,7 +18,7 @@ const topSalariesReportMapping = user => {
 };
 
 async function getRecentEmployeesList(settings, page, pageSize) {
-	const maxNumberInReport = settings[0].parameters.filter(e => e.id === 'num_of_records');
+	const maxNumberInReport = settings[0].parameters.filter(e => e.id === 'num_of_records')[0];
 
 	return getListOfEmployeesSortedByFuncWithPagination(maxNumberInReport.value, page, pageSize, recentEmployeeComparator, recentUserReportMapping);
 }
@@ -46,9 +46,9 @@ async function getListOfEmployeesSortedByFuncWithPagination(maxNumberInReport, p
 }
 
 async function getListOfEmployeesWithBadge(settings, page, pageSize, badgeName) {
-	const maxNumberInReport = settings[0].parameters.filter(e => e.id === 'num_of_records');
+	const maxNumberInReport = settings[0].parameters.filter(e => e.id === 'num_of_records')[0];
 	const employees = await getEmployeesListFromDysk();
-	const employeesForReport = [];
+	let employeesForReport = [];
 	for (let i = 0; i < employees.length; i++) {
 		const employee = employees[i];
 		for (let j = 0; j < employee.badges.length; j++) {
@@ -58,8 +58,8 @@ async function getListOfEmployeesWithBadge(settings, page, pageSize, badgeName) 
 			}
 		}
 	}
-
-	const employeesForPage = getEmployeesWithPagination(employeesForReport.slice(0, maxNumberInReport.value), page, pageSize);
+	employeesForReport = employeesForReport.slice(0, maxNumberInReport.value);
+	const employeesForPage = getEmployeesWithPagination(employeesForReport, page, pageSize);
 
 	const pageResult = [];
 	for (let i = 0; i < employeesForPage.length; i++) {
