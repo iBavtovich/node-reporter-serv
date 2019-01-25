@@ -12,9 +12,9 @@ This is application was made as a first project with Node Js [Express](https://e
 
 ## Preparation
 Configuration for application should be located in `.env` file, which is ignored by git for security reasons. It contains next properties:
-*HOST -host of server
-*PORT - port of server
-*YANDEX_TOKEN - token for yandex Auth
+* HOST -host of server
+* PORT - port of server
+* YANDEX_TOKEN - token for yandex Auth
 
 ## Start application
 
