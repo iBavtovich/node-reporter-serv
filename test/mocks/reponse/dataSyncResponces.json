@@ -1,0 +1,41 @@
+{
+  "records_count": 2,
+  "created": "2019-01-22T20:22:59.327000+00:00",
+  "modified": "2019-01-24T20:42:45.682000+00:00",
+  "records": {
+    "items": [
+      {
+        "record_id": "badge",
+        "collection_id": "settings",
+        "fields": [
+          {
+            "field_id": "num_of_records",
+            "value": {
+              "type": "integer",
+              "integer": 10
+            }
+          }
+        ],
+        "revision": 5
+      },
+      {
+        "record_id": "new_users",
+        "collection_id": "settings",
+        "fields": [
+          {
+            "field_id": "num_of_records",
+            "value": {
+              "type": "integer",
+              "integer": 10
+            }
+          }
+        ],
+        "revision": 5
+      }
+    ]
+  },
+  "database_id": "1",
+  "handle": "xbukzYOZFxWEwLDx1130000027225801UtYDpwjPctkP581d61548188579327",
+  "revision": 5,
+  "size": 1324
+}
