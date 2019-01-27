@@ -3,27 +3,28 @@ const createError = require('http-errors');
 const logger = require('morgan');
 const bb = require('express-busboy');
 const cors = require('cors');
-const passportConfig = require('./configs/passport');
+
+const app = express();
+const expressSwagger = require('express-swagger-generator')(app);
+
+require('./configs/passport');
 const photosRouter = require('./routes/photos');
 const reportsRouter = require('./routes/reports');
 const settingsRouter = require('./routes/settings');
 const authRouter = require('./routes/authentication');
 const {port, host} = require('./configs/config');
 
-const app = express();
-const expressSwagger = require('express-swagger-generator')(app);
-
 const options = {
 	swaggerDefinition: {
 		info: {
 			description: 'Reporter server',
 			title: 'Swagger API of Reporter Service',
-			version: '1.0.0',
+			version: '1.0.0'
 		},
 		host: `${host}:${port}`,
 		basePath: '/',
 		produces: [
-			'application/json',
+			'application/json'
 		],
 		schemes: ['http'],
 		securityDefinitions: {
@@ -31,7 +32,7 @@ const options = {
 				type: 'apiKey',
 				in: 'header',
 				name: 'Authorization',
-				description: 'Get using /authenticate end-point',
+				description: 'Get using /authenticate end-point'
 			}
 		}
 	},

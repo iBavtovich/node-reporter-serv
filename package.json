@@ -1,10 +1,12 @@
 {
   "name": "reporter",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "private": true,
   "scripts": {
     "start": "node ./bin/www",
-    "test": "xo"
+    "lint": "xo",
+    "test": "jest",
+    "coverage": "jest --coverage"
   },
   "dependencies": {
     "ajv": "^6.7.0",
@@ -20,7 +22,6 @@
     "fs": "0.0.1-security",
     "halson": "^3.0.0",
     "http-errors": "~1.6.2",
-    "jest": "^23.6.0",
     "lowdb": "^1.0.0",
     "morgan": "~1.9.0",
     "nodemon": "^1.18.9",
@@ -32,17 +33,45 @@
     "uuid-token-generator": "^1.0.0"
   },
   "devDependencies": {
+    "jest": "^24.0.0",
     "xo": "^0.23.0"
   },
   "xo": {
+    "ignores": [
+      "test/**"
+    ],
     "rules": {
+      "import/no-unassigned-import": [
+        "error",
+        {
+          "allow": [
+            "./configs/passport"
+          ]
+        }
+      ],
+      "max-params": [
+        "error",
+        5
+      ],
+      "new-cap": [
+        "error",
+        {
+          "capIsNewExceptions": [
+            "Router"
+          ]
+        }
+      ],
       "unicorn/filename-case": [
         "error",
-        { "case": "camelCase" }
+        {
+          "case": "camelCase"
+        }
       ],
       "camelcase": [
         "error",
-        {"properties":  "never"}
+        {
+          "properties": "never"
+        }
       ]
     }
   }

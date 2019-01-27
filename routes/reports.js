@@ -140,7 +140,7 @@ router.get('/top-salaries', passport.authenticate('bearer', {session: false}), a
  */
 router.get('/badge', passport.authenticate('bearer', {session: false}), async (req, res) => {
 	let {page, pageSize} = req.query;
-	let badgeName = req.query.badge;
+	const badgeName = req.query.badge;
 	if (page === undefined) {
 		page = 1;
 	}

@@ -37,7 +37,7 @@ const router = express.Router();
  */
 router.put('/', validateSchema('update-settings'), passport.authenticate('bearer', {session: false}), (req, res) => {
 	const userId = req.user.id;
-	dataSyncAdapter.updateSettings(userId, req.body.settings).then(function (result) {
+	dataSyncAdapter.updateSettings(userId, req.body.settings).then(result => {
 		switch (result) {
 			case 200:
 				res.status(result).json({message: 'Settings was successfully updated'});

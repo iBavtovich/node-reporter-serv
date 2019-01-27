@@ -1,7 +1,7 @@
 const fs = require('fs');
 const express = require('express');
 const passport = require('passport');
-const updatePhoto = require('../services/lowDBService');
+const updatePhoto = require('../services/lowDbService');
 
 const router = express.Router();
 

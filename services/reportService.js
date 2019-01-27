@@ -1,4 +1,5 @@
 const getEmployeesListFromDysk = require('./yandexDyskService');
+
 const recentEmployeeComparator = (a, b) => Date.parse(b.joinDate) - Date.parse(a.joinDate);
 const topSalaryComparator = (a, b) => b.salary - a.salary;
 const recentUserReportMapping = user => {
