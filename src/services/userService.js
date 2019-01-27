@@ -1,4 +1,4 @@
-const {users} = require('../users.json');
+const {users} = require('../../users.json');
 
 function getUserByUsername(username) {
 	return users.find(user => user.username === username);

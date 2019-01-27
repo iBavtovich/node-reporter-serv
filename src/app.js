@@ -37,7 +37,7 @@ const options = {
 		}
 	},
 	basedir: '../reporter',
-	files: ['./routes/*.js']
+	files: ['./src/routes/*.js']
 };
 expressSwagger(options);
 
