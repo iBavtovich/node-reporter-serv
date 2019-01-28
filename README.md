@@ -1,4 +1,4 @@
-# Node Js Reporter arr server
+# Node Js Reporter app server
 Reporter is an simple application which helps user to create reports about their employees divided on 3 categories:
 * recent employees report (you can specify total number of records in report)
 * top-salaries report (10 employees) 
@@ -15,6 +15,8 @@ Configuration for application should be located in `.env` file, which is ignored
 * HOST - host of server
 * PORT - port of server
 * YANDEX_TOKEN - token for yandex Auth
+* REPORT_NUM_OF_RECORDS - max number of records in "recent employees" and "employee with badge" reports
+* REPORT_EXCH_RATE - exchange rate of US dollar for USD salary calculation
 
 ## Start application
 
