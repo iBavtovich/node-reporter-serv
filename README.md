@@ -12,7 +12,7 @@ This is application was made as a first project with Node Js [Express](https://e
 
 ## Preparation
 Configuration for application should be located in `.env` file, which is ignored by git for security reasons. It contains next properties:
-* HOST -host of server
+* HOST - host of server
 * PORT - port of server
 * YANDEX_TOKEN - token for yandex Auth
 
@@ -27,10 +27,15 @@ Or you can start application with [`nodemon`](https://github.com/remy/nodemon) l
 nodemon /bin/www.js
 ```
 ## Test
+If you wan't to run tests:
 ```bash
 npm test
 ```
-This will invoke [`xo`](https://github.com/xojs/xo) linter and test execution.
+If you want to check code style run next command:
+```bash
+npm run lint
+```
+It will invoke [`xo`](https://github.com/xojs/xo) linter execution.
 
 ## Docs
 
