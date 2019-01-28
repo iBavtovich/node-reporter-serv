@@ -1,6 +1,7 @@
 const axios = require('axios');
 const token = require('../configs/config').yandexToken;
 const settingsConverter = require('../converters/settingsConverter');
+const { maxNumOfRecords, exchangeRate } = require('../configs/config');
 
 const yandexHttpClient = axios.create({
 	baseURL: 'https://cloud-api.yandex.net/v1/data/app/databases',
@@ -61,7 +62,7 @@ async function setUpSettingsFirstTime(userId) {
 						field_id: 'num_of_records',
 						value: {
 							type: 'integer',
-							integer: 10
+							integer: maxNumOfRecords
 						}
 					}]
 				}, {
@@ -73,7 +74,7 @@ async function setUpSettingsFirstTime(userId) {
 						field_id: 'num_of_records',
 						value: {
 							type: 'integer',
-							integer: 10
+							integer: maxNumOfRecords
 						}
 					}]
 				}, {
@@ -85,7 +86,7 @@ async function setUpSettingsFirstTime(userId) {
 						field_id: 'exchange_rate',
 						value: {
 							type: 'integer',
-							integer: 67
+							integer: exchangeRate
 						}
 					}]
 				}
