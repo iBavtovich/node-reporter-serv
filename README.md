@@ -31,6 +31,10 @@ If you wan't to run tests:
 ```bash
 npm test
 ```
+In case if you want get test coverage:
+```bash
+npm run coverage
+```
 If you want to check code style run next command:
 ```bash
 npm run lint
