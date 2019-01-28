@@ -9,13 +9,15 @@ const recentUserReportMapping = user => {
 		joinDate: user.joinDate
 	};
 };
-const topSalariesReportMapping = user => {
-	return {
-		firstName: user.name,
-		lastName: user.lastName,
-		salary: user.salary,
-		salaryUsd: Math.round(user.salary / 67)
-	};
+const topSalariesReportMappingForExchangeRate = (exchangeRate) => {
+	return (user) =>{
+		return {
+			firstName: user.name,
+			lastName: user.lastName,
+			salary: user.salary,
+			salaryUsd: Math.round(user.salary / exchangeRate)
+		};
+	}
 };
 
 async function getRecentEmployeesList(settings, page, pageSize) {
@@ -24,8 +26,11 @@ async function getRecentEmployeesList(settings, page, pageSize) {
 	return getListOfEmployeesSortedByFuncWithPagination(maxNumberInReport.value, page, pageSize, recentEmployeeComparator, recentUserReportMapping);
 }
 
-async function getTopSalariesEmployeesList() {
-	return getListOfEmployeesSortedByFuncWithPagination(10, 1, 10, topSalaryComparator, topSalariesReportMapping);
+async function getTopSalariesEmployeesList(settings) {
+	const exchangeRate = settings[0].parameters.filter(e => e.id === 'exchange_rate')[0];
+
+	const mappingFunction = topSalariesReportMappingForExchangeRate(exchangeRate.value);
+	return getListOfEmployeesSortedByFuncWithPagination(10, 1, 10, topSalaryComparator, mappingFunction);
 }
 
 async function getListOfEmployeesSortedByFuncWithPagination(maxNumberInReport, page, pageSize, sortFunction, mappingFunction) {

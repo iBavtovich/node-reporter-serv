@@ -76,6 +76,18 @@ async function setUpSettingsFirstTime(userId) {
 							integer: 10
 						}
 					}]
+				}, {
+					change_type: 'insert',
+					collection_id: 'settings',
+					record_id: 'top_salaries',
+					changes: [{
+						change_type: 'set',
+						field_id: 'exchange_rate',
+						value: {
+							type: 'integer',
+							integer: 67
+						}
+					}]
 				}
 			]
 		};

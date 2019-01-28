@@ -9,7 +9,7 @@ describe('Test the authentication path', () => {
 				username: 'johny99',
 				password: '123123123'
 			})
-			.expect(function(res) {
+			.expect(res => {
 				res.body.token.startsWith("Bearer");
 			})
 			.expect(200)

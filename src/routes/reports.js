@@ -93,7 +93,8 @@ router.get('/new-users', passport.authenticate('bearer', {session: false}), asyn
  * @security bearerAuth
  */
 router.get('/top-salaries', passport.authenticate('bearer', {session: false}), async (req, res) => {
-	const usersData = await reportService.topSalariesReport();
+	const settings = await dataSyncService.getSettingsForReport(req.user.id, 'top_salaries');
+	const usersData = await reportService.topSalariesReport(settings);
 
 	const response = halson({
 		employees: usersData.users
