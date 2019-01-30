@@ -59,7 +59,7 @@ describe('Test for new users report', () => {
 		for (let i = 1; i < report.users.length; i++) {
 			const employee = report.users[i];
 			const prevEmployee = report.users[i - 1];
-			expect(Date.parse(employee.joinDate) <= Date.parse(prevEmployee.joinDate)).toBeTruthy();
+			expect(Date.parse(employee.joinDate)).toBeLessThanOrEqual(Date.parse(prevEmployee.joinDate));
 		}
 
 	});
@@ -149,7 +149,7 @@ describe('Test for salary report', () => {
 			expect(employee).toHaveProperty('firstName');
 			expect(employee).toHaveProperty('lastName');
 			expect(employee).toHaveProperty('salary');
-			expect(employee).toHaveProperty('joinDate');
+			expect(employee).toHaveProperty('salaryUsd');
 		}
 
 	});
@@ -165,7 +165,7 @@ describe('Test for salary report', () => {
 		for (let i = 0; i < employeesInReport.length; i++) {
 
 			const employee = employeesInReport[i];
-			expect(employee.salaryUsd === Math.round(user.salary / exchangeRate)).toBeTruthy();
+			expect(employee.salaryUsd === Math.round(employee.salary / exchangeRate)).toBeTruthy();
 		}
 	});
 
@@ -175,7 +175,7 @@ describe('Test for salary report', () => {
 		for (let i = 1; i < employeesInReport.length; i++) {
 			const employee = employeesInReport[i];
 			const prevEmployee = employeesInReport[i - 1];
-			expect(employee.salary <= prevEmployee.salary).toBeTruthy();
+			expect(employee.salaryUsd).toBeLessThanOrEqual(prevEmployee.salaryUsd);
 		}
 	});
 });
