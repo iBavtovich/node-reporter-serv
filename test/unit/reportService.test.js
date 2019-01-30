@@ -127,3 +127,56 @@ describe('Test for badge report', () => {
 	});
 });
 
+describe('Test for salary report', () => {
+	const topSalaryReportSettings = [
+		{
+			"report_name": "top_salaries",
+			"parameters": [
+				{
+					"id": "exchange_rate",
+					"value": 66
+				}
+			]
+		}
+	];
+
+	test('when user get new top salaries report record structure is correct', async () => {
+		const report = await reportService.topSalariesReport(topSalaryReportSettings);
+
+		expect(report).toBeDefined();
+		for (let i = 0; i < report.users.length; i++) {
+			const employee = report.users[i];
+			expect(employee).toHaveProperty('firstName');
+			expect(employee).toHaveProperty('lastName');
+			expect(employee).toHaveProperty('salary');
+			expect(employee).toHaveProperty('joinDate');
+		}
+
+	});
+
+	test('when user get top salaries report it is correct', async () => {
+		const report = await reportService.topSalariesReport(topSalaryReportSettings);
+
+		const employeesInReport = report.users;
+		expect(report.totalNumber).toBe(9);
+
+		const exchangeRate = topSalaryReportSettings[0].parameters[0].value;
+		expect(employeesInReport).toHaveLength(9);
+		for (let i = 0; i < employeesInReport.length; i++) {
+
+			const employee = employeesInReport[i];
+			expect(employee.salaryUsd === Math.round(user.salary / exchangeRate)).toBeTruthy();
+		}
+	});
+
+	test('when user get new user report records are in correct order', async () => {
+		const report = await reportService.topSalariesReport(topSalaryReportSettings);
+		const employeesInReport = report.users;
+		for (let i = 1; i < employeesInReport.length; i++) {
+			const employee = employeesInReport[i];
+			const prevEmployee = employeesInReport[i - 1];
+			expect(employee.salary <= prevEmployee.salary).toBeTruthy();
+		}
+	});
+});
+
