@@ -65,7 +65,6 @@ describe('Test for new users report', () => {
 	});
 });
 
-
 describe('Test for badge report', () => {
 	const settingsBadge = [
 		{

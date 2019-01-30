@@ -9,15 +9,15 @@ const recentUserReportMapping = user => {
 		joinDate: user.joinDate
 	};
 };
-const topSalariesReportMappingForExchangeRate = (exchangeRate) => {
-	return (user) =>{
+const topSalariesReportMappingForExchangeRate = exchangeRate => {
+	return user => {
 		return {
 			firstName: user.name,
 			lastName: user.lastName,
 			salary: user.salary,
 			salaryUsd: Math.round(user.salary / exchangeRate)
 		};
-	}
+	};
 };
 
 async function getRecentEmployeesList(settings, page, pageSize) {

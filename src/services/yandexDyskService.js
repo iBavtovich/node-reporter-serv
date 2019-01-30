@@ -1,8 +1,8 @@
 const axios = require('axios');
 const parse = require('csv-parse/lib/sync');
+const parseUri = require('parseUri');
 const token = require('../configs/config').yandexToken;
 const Employee = require('../models/employee');
-const parseUri = require('parseUri');
 
 const fileName = 'employees.csv';
 const yandexDyskData = {
@@ -23,19 +23,19 @@ const getEmployeesListFromDysk = async () => {
 
 	if (fileNotModified(fileLink)) {
 		return yandexDyskData.employees;
-	} else {
-		let employees = [];
-		const csvContent = await downloadFileForLink(fileLink);
-		const data = parse(csvContent);
-		for (let i = 1; i < data.length; i++) {
-			const employee = new Employee(data[i]);
-			employees.push(employee);
-		}
-
-		yandexDyskData.employees = employees;
-
-		return employees;
 	}
+
+	const employees = [];
+	const csvContent = await downloadFileForLink(fileLink);
+	const data = parse(csvContent);
+	for (let i = 1; i < data.length; i++) {
+		const employee = new Employee(data[i]);
+		employees.push(employee);
+	}
+
+	yandexDyskData.employees = employees;
+
+	return employees;
 };
 
 async function getLinkForFileDownloading(file) {
@@ -51,7 +51,7 @@ async function getLinkForFileDownloading(file) {
 async function downloadFileForLink(fileLink) {
 	try {
 		const response = await yandexHttpClient.get(fileLink);
-		console.log("File from YandexDysk was downloaded");
+		console.log('File from YandexDysk was downloaded');
 		return response.data;
 	} catch (error) {
 		console.error(error);
@@ -60,13 +60,13 @@ async function downloadFileForLink(fileLink) {
 
 function fileNotModified(fileLink) {
 	const parsedLink = parseUri(fileLink);
-	const eTag = parsedLink.queryKey['etag'];
+	const eTag = parsedLink.queryKey.etag;
 	if (eTag === yandexDyskData.eTag) {
 		return true;
-	} else {
-		yandexDyskData.eTag = eTag;
-		return false;
 	}
+
+	yandexDyskData.eTag = eTag;
+	return false;
 }
 
 module.exports = getEmployeesListFromDysk;

@@ -1,7 +1,7 @@
 const axios = require('axios');
 const token = require('../configs/config').yandexToken;
 const settingsConverter = require('../converters/settingsConverter');
-const { maxNumOfRecords, exchangeRate } = require('../configs/config');
+const {maxNumOfRecords, exchangeRate} = require('../configs/config');
 
 const yandexHttpClient = axios.create({
 	baseURL: 'https://cloud-api.yandex.net/v1/data/app/databases',
