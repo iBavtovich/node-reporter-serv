@@ -2,6 +2,7 @@ const fs = require('fs');
 const express = require('express');
 const passport = require('passport');
 const updatePhoto = require('../services/lowDbService');
+const photoService = require('../services/photoService');
 
 const router = express.Router();
 
@@ -22,8 +23,11 @@ router.put('/:id', passport.authenticate('bearer', {session: false}), (req, res)
 	const {photo} = req.files;
 	const justOneFileInReq = !Array.isArray(photo);
 	if (req.files.photo && justOneFileInReq && emptyFieldsInReq) {
-		updatePhoto(req.params.id, fs.readFileSync(photo.file, 'base64'));
-		res.status(200).json({status: 'Photo was successfully updated'});
+		photoService.addWatermarkToPhoto(photo.file).then(() => {
+				updatePhoto(req.params.id, fs.readFileSync(photo.file, 'base64'));
+				res.status(200).json({status: 'Photo was successfully updated'});
+			}
+		)
 	} else {
 		res.status(500).json({error: 'Invalid input data format'});
 	}
